@@ -10,7 +10,7 @@ const DefaultLayout = () => {
       <MainMenu />
       <Layout style={{ backgroundColor: 'transparent' }}>
         <MainHeader />
-        <Content>
+        <Content style={{ padding: 50 }}>
           <Outlet />
         </Content>
       </Layout>

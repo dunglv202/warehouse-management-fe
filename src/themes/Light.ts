@@ -5,7 +5,7 @@ const lightTheme: ThemeConfig = {
     colorPrimary: '#4e74ff',
     borderRadius: 6,
     fontFamily:
-      "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif",
+      "Nunito, sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans'",
   },
   components: {
     Input: {
@@ -19,10 +19,11 @@ const lightTheme: ThemeConfig = {
       siderBg: 'transparent',
     },
     Menu: {
-      itemMarginBlock: 15,
+      itemMarginBlock: 10,
     },
     Typography: {
       colorLink: '#4e74ff',
+      colorPrimary: 'rgba(0, 0, 0, 0.8)',
     },
   },
 }

@@ -23,7 +23,9 @@ const Login = () => {
 
   return (
     <Flex vertical justify='center' style={{ maxWidth: 400, margin: '0 auto' }}>
-      <Typography.Title level={2}>Login</Typography.Title>
+      <Typography.Title level={2} style={{ marginTop: 0 }}>
+        Login
+      </Typography.Title>
       <Divider />
       <Form form={form} name='validateOnly' layout='vertical' autoComplete='off'>
         <Form.Item name='username' label='Username' rules={[{ required: true }]}>

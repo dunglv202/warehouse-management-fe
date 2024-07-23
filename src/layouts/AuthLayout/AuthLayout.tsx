@@ -18,7 +18,7 @@ const AuthLayout = () => {
           style={{
             height: '100%',
             backgroundColor: '#f9fafc',
-            paddingTop: '20%',
+            paddingTop: '15%',
             boxSizing: 'border-box',
           }}
         >
@@ -51,7 +51,7 @@ const AuthLayout = () => {
         </Flex>
       </Col>
       <Col lg={{ span: 12 }} md={{ span: 24 }}>
-        <Content style={{ paddingTop: '20%' }}>
+        <Content style={{ paddingTop: '15%' }}>
           <Outlet />
         </Content>
       </Col>

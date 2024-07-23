@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import './side.css';
 
 .ant-menu-title-content,
 .ant-dropdown-menu-title-content {
   font-weight: bold;
+}
+
+.hoverable:hover {
+  color: #4e74ff;
+  transition: color 0.15s;
 }
