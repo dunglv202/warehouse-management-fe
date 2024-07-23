@@ -37,7 +37,9 @@ const Login = () => {
             <Form.Item name='remember' valuePropName='checked' noStyle initialValue={true}>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <Link to='#'>Forgot password</Link>
+            <Link to='#'>
+              <Typography.Link style={{ fontWeight: 'bold' }}>Forgot password</Typography.Link>
+            </Link>
           </Flex>
         </Form.Item>
         <Form.Item>
@@ -47,7 +49,10 @@ const Login = () => {
         </Form.Item>
       </Form>
       <Typography.Text>
-        Don't have an account? <Link to='/register'>Register</Link>
+        Don't have an account?{' '}
+        <Link to='/register'>
+          <Typography.Link style={{ fontWeight: 'bold' }}>Register</Typography.Link>
+        </Link>
       </Typography.Text>
     </Flex>
   )

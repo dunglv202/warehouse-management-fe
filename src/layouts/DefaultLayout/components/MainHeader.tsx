@@ -27,7 +27,7 @@ const MainHeader = () => {
           trigger={['click']}
           placement='bottomRight'
         >
-          <Avatar size={42} style={{ backgroundColor: '#1640d6', cursor: 'pointer' }}>
+          <Avatar size={42} style={{ backgroundColor: '#4e74ff', cursor: 'pointer' }}>
             G
           </Avatar>
         </Dropdown>

@@ -2,11 +2,10 @@ import { ThemeConfig } from 'antd'
 
 const lightTheme: ThemeConfig = {
   token: {
-    colorPrimary: '#1640d6',
+    colorPrimary: '#4e74ff',
     borderRadius: 6,
     fontFamily:
       "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif",
-    'blue-5': '#e6efff',
   },
   components: {
     Input: {
@@ -21,6 +20,9 @@ const lightTheme: ThemeConfig = {
     },
     Menu: {
       itemMarginBlock: 15,
+    },
+    Typography: {
+      colorLink: '#4e74ff',
     },
   },
 }
