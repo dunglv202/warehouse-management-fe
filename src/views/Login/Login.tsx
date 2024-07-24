@@ -62,14 +62,6 @@ const Login = () => {
           </Button>
         </Form.Item>
       </Form>
-      <Typography.Text>
-        Don't have an account?{' '}
-        <Link to='/register'>
-          <Typography.Text style={{ fontWeight: 'bold', color: 'inherit' }}>
-            Register
-          </Typography.Text>
-        </Link>
-      </Typography.Text>
     </Flex>
   )
 }

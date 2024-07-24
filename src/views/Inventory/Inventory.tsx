@@ -1,4 +1,5 @@
 import ListView from '@/components/ListView'
+import useGuard from '@/hooks/useGuard'
 import { Product } from '@/models/product'
 import { IconPencilMinus } from '@tabler/icons-react'
 import { Image, TableProps } from 'antd'
@@ -36,6 +37,7 @@ const columns: TableProps['columns'] = [
 ]
 
 const Inventory = () => {
+  useGuard()
   const [products, setProducts] = useState<Product[]>([])
 
   useEffect(() => {
