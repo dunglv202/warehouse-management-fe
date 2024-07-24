@@ -53,13 +53,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
-      {loading ? (
-        <div style={{ height: '100vh', width: '100vw' }}>
-          <Loading size='large' />
-        </div>
-      ) : (
-        children
-      )}
+      <Loading loading={loading} fullscreen>
+        {children}
+      </Loading>
     </AuthContext.Provider>
   )
 }

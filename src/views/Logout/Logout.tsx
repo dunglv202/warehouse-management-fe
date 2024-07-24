@@ -21,7 +21,7 @@ const Logout = () => {
     doLogout()
   }, [doLogout])
 
-  return <Loading />
+  return <Loading fullscreen />
 }
 
 export default Logout

@@ -1,10 +1,24 @@
 import { Flex, Spin, SpinProps } from 'antd'
+import { CSSProperties } from 'react'
 
-const Loading = ({ size }: { size?: SpinProps['size'] }) => {
-  return (
-    <Flex align='center' justify='center' style={{ width: '100%', height: '100%' }}>
+interface LoadingProps {
+  loading?: boolean
+  size?: SpinProps['size']
+  fullscreen?: boolean
+  children?: React.ReactNode
+}
+
+const Loading = ({ loading = true, size, fullscreen, children }: LoadingProps) => {
+  const style: CSSProperties = fullscreen
+    ? { width: '100vw', height: '100vh', position: 'fixed', top: 0, left: 0 }
+    : {}
+
+  return loading ? (
+    <Flex align='center' justify='center' style={style}>
       <Spin size={size} />
     </Flex>
+  ) : (
+    children
   )
 }
 
