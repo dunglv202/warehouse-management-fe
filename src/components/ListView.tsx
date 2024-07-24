@@ -22,7 +22,7 @@ const ListView = ({ listName, dataSource, columns }: Props) => {
           </Button>
         </Flex>
       </Flex>
-      <Table dataSource={dataSource} columns={columns} />;
+      <Table dataSource={dataSource} columns={columns} />
     </Card>
   )
 }

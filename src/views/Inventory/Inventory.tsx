@@ -51,7 +51,13 @@ const Inventory = () => {
     ])
   }, [])
 
-  return <ListView listName='Product List' dataSource={products} columns={columns} />
+  return (
+    <ListView
+      listName='Product List'
+      dataSource={products.map((p) => ({ key: p.id, ...p }))}
+      columns={columns}
+    />
+  )
 }
 
 export default Inventory

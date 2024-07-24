@@ -10,58 +10,73 @@ import {
 } from '@tabler/icons-react'
 import { Flex, Image, Menu, MenuProps } from 'antd'
 import Sider from 'antd/es/layout/Sider'
-import { Link } from 'react-router-dom'
+import { ReactNode } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+interface MenuItem {
+  path: string
+  label: string
+  icon: ReactNode
+}
 
-type MenuItem = Required<MenuProps>['items'][number]
-
-const items: MenuItem[] = [
+const menuItems: MenuItem[] = [
   {
-    key: 'dashboard',
+    path: '/dashboard',
+    label: 'Dashboard',
     icon: <IconGraph size={21} />,
-    label: <Link to='/dashboard'>Dashboard</Link>,
   },
   {
-    key: 'inventory',
+    path: '/inventory',
+    label: 'Inventory',
     icon: <IconBuildingWarehouse size={21} />,
-    label: <Link to='/inventory'>Inventory</Link>,
   },
   {
-    key: 'category',
+    path: '/category',
+    label: 'Category',
     icon: <IconTag size={21} />,
-    label: <Link to='/inventory'>Category</Link>,
   },
   {
-    key: 'import',
+    path: '/import',
+    label: 'Import',
     icon: <IconPackageImport size={21} />,
-    label: <Link to='/inventory'>Import</Link>,
   },
   {
-    key: 'export',
+    path: '/export',
+    label: 'Export',
     icon: <IconTruckDelivery size={21} />,
-    label: <Link to='/inventory'>Export</Link>,
   },
   {
-    key: 'report',
+    path: '/report',
+    label: 'Report',
     icon: <IconClipboardData size={21} />,
-    label: <Link to='/inventory'>Report</Link>,
   },
   {
-    key: 'setting',
+    path: '/setting',
+    label: 'Setting',
     icon: <IconSettings size={21} />,
-    label: <Link to='/setting'>Setting</Link>,
   },
 ]
 
+const makeMenuItem = (item: MenuItem): Required<MenuProps>['items'][number] => {
+  return {
+    key: item.path,
+    icon: item.icon,
+    label: <Link to={item.path}>{item.label}</Link>,
+  }
+}
+
 const MainMenu = () => {
+  const location = useLocation()
+  const activeMenu = menuItems.map((item) => item.path).find((key) => location.pathname === key)
+
   return (
     <Sider width={300} style={{ paddingLeft: 20, paddingBlock: 40 }}>
       <Flex justify='center'>
         <Image width={50} src={logo} preview={false} style={{ marginBottom: 20 }} />
       </Flex>
       <Menu
-        defaultSelectedKeys={['dashboard']}
+        defaultSelectedKeys={activeMenu ? [activeMenu] : ['/dashboard']}
         mode='inline'
-        items={items}
+        items={menuItems.map(makeMenuItem)}
         style={{ backgroundColor: 'transparent', border: 'none' }}
       />
     </Sider>
