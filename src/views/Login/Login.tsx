@@ -1,10 +1,13 @@
+import AuthContext from '@/context/AuthContext'
 import { IconLock, IconUser } from '@tabler/icons-react'
 import { Button, Checkbox, Divider, Flex, Form, Input, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useContext, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const navigate = useNavigate()
+  const authContext = useContext(AuthContext)
   const [form] = useForm<{
     username: string
     password: string
@@ -12,10 +15,17 @@ const Login = () => {
   }>()
   const [submitting, setSubmitting] = useState(false)
 
+  useEffect(() => {
+    if (authContext.user) {
+      navigate('/dashboard')
+    }
+  }, [authContext.user, navigate])
+
   form.submit = async () => {
     try {
       setSubmitting(true)
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await authContext.login(form.getFieldsValue())
+      navigate('/dashboard')
     } finally {
       setSubmitting(false)
     }
@@ -32,7 +42,7 @@ const Login = () => {
           <Input prefix={<IconUser size={20} />} />
         </Form.Item>
         <Form.Item name='password' label='Password' rules={[{ required: true }]}>
-          <Input prefix={<IconLock size={20} />} />
+          <Input type='password' prefix={<IconLock size={20} />} />
         </Form.Item>
         <Form.Item>
           <Flex justify='space-between'>
@@ -40,7 +50,9 @@ const Login = () => {
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
             <Link to='#'>
-              <Typography.Link style={{ fontWeight: 'bold' }}>Forgot password</Typography.Link>
+              <Typography.Text style={{ fontWeight: 'bold', color: 'inherit' }}>
+                Forgot password
+              </Typography.Text>
             </Link>
           </Flex>
         </Form.Item>
@@ -53,7 +65,9 @@ const Login = () => {
       <Typography.Text>
         Don't have an account?{' '}
         <Link to='/register'>
-          <Typography.Link style={{ fontWeight: 'bold' }}>Register</Typography.Link>
+          <Typography.Text style={{ fontWeight: 'bold', color: 'inherit' }}>
+            Register
+          </Typography.Text>
         </Link>
       </Typography.Text>
     </Flex>
