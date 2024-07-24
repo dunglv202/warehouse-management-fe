@@ -1,3 +1,4 @@
+import Loading from '@/components/Loading'
 import { AuthResult, Credential } from '@/models/auth'
 import { User } from '@/models/user'
 import { login as doLogin, logout as doLogout } from '@/services/auth-service'
@@ -18,11 +19,22 @@ const AuthContext = createContext<{
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User>()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const authenticated = localStorage.getItem(KEY_AUTHENTICATED)
-    if (authenticated && Boolean(authenticated)) {
-      getMyInfo().then(setUser)
+    const authenticated = Boolean(localStorage.getItem(KEY_AUTHENTICATED))
+
+    const fetchUser = async () => {
+      if (authenticated && Boolean(authenticated)) {
+        setUser(await getMyInfo())
+        setLoading(false)
+      }
+    }
+
+    if (authenticated) {
+      fetchUser()
+    } else {
+      setLoading(false)
     }
   }, [])
 
@@ -39,7 +51,17 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem(KEY_AUTHENTICATED)
   }
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {loading ? (
+        <div style={{ height: '100vh', width: '100vw' }}>
+          <Loading size='large' />
+        </div>
+      ) : (
+        children
+      )}
+    </AuthContext.Provider>
+  )
 }
 
 export default AuthContext

@@ -1,5 +1,5 @@
+import Loading from '@/components/Loading'
 import AuthContext from '@/context/AuthContext'
-import { Flex, Spin } from 'antd'
 import { useCallback, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -21,11 +21,7 @@ const Logout = () => {
     doLogout()
   }, [doLogout])
 
-  return (
-    <Flex align='center' justify='center' style={{ width: '100vw', height: '100vh' }}>
-      <Spin size='large' />
-    </Flex>
-  )
+  return <Loading />
 }
 
 export default Logout
