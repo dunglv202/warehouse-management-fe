@@ -1,14 +1,13 @@
 import AuthContext from '@/context/AuthContext'
 import { IconLock, IconUser } from '@tabler/icons-react'
 import { Button, Checkbox, Divider, Flex, Form, Input, Typography } from 'antd'
-import { useForm } from 'antd/es/form/Form'
 import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const navigate = useNavigate()
   const authContext = useContext(AuthContext)
-  const [form] = useForm<{
+  const [form] = Form.useForm<{
     username: string
     password: string
     remember: boolean
@@ -24,6 +23,7 @@ const Login = () => {
   form.submit = async () => {
     try {
       setSubmitting(true)
+      await form.validateFields()
       await authContext.login(form.getFieldsValue())
       navigate('/dashboard')
     } finally {
@@ -42,7 +42,7 @@ const Login = () => {
           <Input prefix={<IconUser size={20} />} />
         </Form.Item>
         <Form.Item name='password' label='Password' rules={[{ required: true }]}>
-          <Input type='password' prefix={<IconLock size={20} />} />
+          <Input.Password prefix={<IconLock size={20} />} />
         </Form.Item>
         <Form.Item>
           <Flex justify='space-between'>

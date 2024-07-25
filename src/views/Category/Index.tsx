@@ -1,3 +1,4 @@
+import Loading from '@/components/Loading'
 import NewButton from '@/components/Toolbar/NewButton'
 import Search from '@/components/Toolbar/Search'
 import Toolbar from '@/components/Toolbar/Toolbar'
@@ -7,7 +8,7 @@ import { getCategories } from '@/services/category-service'
 import { Flex } from 'antd'
 import { useEffect, useState } from 'react'
 import CategoryCard from './components/CategoryCard'
-import Loading from '@/components/Loading'
+import NewCategory from './NewCategory'
 
 const Category = () => {
   useGuard()
@@ -15,6 +16,8 @@ const Category = () => {
   const [loading, setLoading] = useState(false)
   const [keyword, setKeyword] = useState('')
   const [categories, setCategories] = useState<Category[]>([])
+  const [showForm, setShowForm] = useState(false)
+  const [refresh, setRefresh] = useState({})
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -28,13 +31,13 @@ const Category = () => {
     }
 
     fetchCategories()
-  }, [keyword])
+  }, [keyword, refresh])
 
   return (
     <div>
       <Toolbar style={{ marginBottom: 30 }}>
         <Search onSearch={setKeyword} />
-        <NewButton />
+        <NewButton onClick={() => setShowForm(true)} />
       </Toolbar>
       <Loading loading={loading}>
         <Flex wrap gap={30}>
@@ -43,6 +46,9 @@ const Category = () => {
           ))}
         </Flex>
       </Loading>
+      {showForm && (
+        <NewCategory close={() => setShowForm(false)} onSaveDone={() => setRefresh({})} />
+      )}
     </div>
   )
 }

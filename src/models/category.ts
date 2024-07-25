@@ -4,3 +4,9 @@ export interface Category {
   thumbnail?: string
   description?: string
 }
+
+export interface NewCategory {
+  name: string
+  thumbnail?: File
+  description?: string
+}

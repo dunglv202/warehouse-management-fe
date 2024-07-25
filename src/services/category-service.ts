@@ -1,4 +1,4 @@
-import { Category } from '@/models/category'
+import { Category, NewCategory } from '@/models/category'
 import { Page } from '@/models/common'
 import axios from 'axios'
 
@@ -8,4 +8,8 @@ export const getCategories = async (keyword?: string) => {
       params: { keyword },
     })
   ).data
+}
+
+export const createCategory = async (category: NewCategory) => {
+  await axios.postForm('/api/categories', category)
 }
