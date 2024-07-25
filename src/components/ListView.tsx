@@ -1,5 +1,6 @@
-import { IconPlus, IconReload } from '@tabler/icons-react'
-import { Button, Card, Flex, Input, Table, TableProps, Typography } from 'antd'
+import { Card, Flex, Table, TableProps, Typography } from 'antd'
+import NewButton from './Toolbar/NewButton'
+import Toolbar from './Toolbar/Toolbar'
 
 interface Props {
   listName: string
@@ -9,21 +10,19 @@ interface Props {
 
 const ListView = ({ listName, dataSource, columns }: Props) => {
   return (
-    <Card bordered={false} style={{ padding: 10 }}>
+    <>
       <Flex wrap align='center' justify='space-between' style={{ marginBottom: 20 }}>
         <Typography.Title level={4} style={{ marginBlock: 0 }}>
           {listName}
         </Typography.Title>
-        <Flex justify='end' align='center' gap={15}>
-          <Input placeholder='Search' />
-          <Button icon={<IconReload size={18} />}>Refresh</Button>
-          <Button type='primary' icon={<IconPlus size={18} />}>
-            Add New
-          </Button>
-        </Flex>
+        <Toolbar>
+          <NewButton />
+        </Toolbar>
       </Flex>
-      <Table dataSource={dataSource} columns={columns} />
-    </Card>
+      <Card bordered={false} style={{ padding: 10 }}>
+        <Table dataSource={dataSource} columns={columns} />
+      </Card>
+    </>
   )
 }
 
