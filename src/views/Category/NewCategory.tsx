@@ -1,10 +1,8 @@
+import ImageUploader from '@/components/ImageUploader/ImageUploader'
+import useGuard from '@/hooks/useGuard'
 import { createCategory } from '@/services/category-service'
-import { IconUpload } from '@tabler/icons-react'
-import { Button, Form, GetProp, Image, Input, Modal, Upload, UploadFile, UploadProps } from 'antd'
-import ImgCrop from 'antd-img-crop'
+import { Button, Form, Input, Modal } from 'antd'
 import { useState } from 'react'
-
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
 
 interface NewCategoryProps {
   close: () => void
@@ -12,13 +10,14 @@ interface NewCategoryProps {
 }
 
 const NewCategory = ({ close, onSaveDone }: NewCategoryProps) => {
+  useGuard()
+
   const [form] = Form.useForm<{
     name: string
     description: string
   }>()
   const [submitting, setSubmitting] = useState(false)
-  const [fileList, setFileList] = useState<UploadFile[]>([])
-  const [previewImage, setPreviewImage] = useState('')
+  const [thumbnail, setThumbnail] = useState<File>()
 
   const submit = async () => {
     setSubmitting(true)
@@ -26,29 +25,13 @@ const NewCategory = ({ close, onSaveDone }: NewCategoryProps) => {
       await form.validateFields()
       await createCategory({
         ...form.getFieldsValue(),
-        thumbnail: fileList?.[0].originFileObj,
+        thumbnail,
       })
       close()
       onSaveDone()
     } finally {
       setSubmitting(false)
     }
-  }
-
-  const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-    setFileList(newFileList)
-  }
-
-  const onPreview = async (file: UploadFile) => {
-    let src = file.url as string
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file.originFileObj as FileType)
-        reader.onload = () => resolve(reader.result as string)
-      })
-    }
-    setPreviewImage(src)
   }
 
   return (
@@ -64,29 +47,7 @@ const NewCategory = ({ close, onSaveDone }: NewCategoryProps) => {
     >
       <Form form={form} layout='vertical' autoComplete='off'>
         <Form.Item label='Thumbnail'>
-          <ImgCrop rotationSlider>
-            <Upload
-              customRequest={async ({ onSuccess }) => {
-                onSuccess?.('')
-              }}
-              listType='picture-card'
-              onChange={onChange}
-              onPreview={onPreview}
-            >
-              {!fileList.length && <IconUpload size={18} />}
-            </Upload>
-          </ImgCrop>
-          {previewImage && (
-            <Image
-              wrapperStyle={{ display: 'none' }}
-              preview={{
-                visible: !!previewImage,
-                onVisibleChange: (visible) => setPreviewImage(visible ? previewImage : ''),
-                afterOpenChange: (visible) => !visible && setPreviewImage(''),
-              }}
-              src={previewImage}
-            />
-          )}
+          <ImageUploader onUpload={setThumbnail} />
         </Form.Item>
         <Form.Item
           label='Name'

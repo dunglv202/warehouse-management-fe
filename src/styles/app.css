@@ -2,11 +2,6 @@
 @import './side.css';
 @import './category.css';
 
-.ant-menu-title-content,
-.ant-dropdown-menu-title-content {
-  font-weight: bold;
-}
-
 .hoverable:hover {
   color: #4e74ff;
   transition: color 0.15s;

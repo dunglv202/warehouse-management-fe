@@ -1,5 +1,5 @@
 import { Page } from '@/models/common'
-import { Product, ProductCriteria } from '@/models/product'
+import { NewProduct, Product, ProductCriteria } from '@/models/product'
 import axios from 'axios'
 
 export const getProducts = async (criteria: ProductCriteria) => {
@@ -8,4 +8,8 @@ export const getProducts = async (criteria: ProductCriteria) => {
       params: criteria,
     })
   ).data
+}
+
+export const createProduct = async (product: NewProduct) => {
+  await axios.postForm('/api/products', product)
 }

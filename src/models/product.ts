@@ -11,3 +11,10 @@ export interface Product {
 export interface ProductCriteria {
   keyword?: string
 }
+
+export interface NewProduct {
+  name: string
+  thumbnail: File
+  stockQuantity: number
+  categories?: number[]
+}

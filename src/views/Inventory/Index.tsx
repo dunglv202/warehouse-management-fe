@@ -5,7 +5,7 @@ import useGuard from '@/hooks/useGuard'
 import { Product } from '@/models/product'
 import { getProducts } from '@/services/product-service'
 import { IconPencilMinus } from '@tabler/icons-react'
-import { Card, Flex, Image, Table, TableProps, Tag, Typography } from 'antd'
+import { Card, Flex, Image, Space, Table, TableProps, Tag, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -16,7 +16,7 @@ const columns: TableProps['columns'] = [
     title: 'Preview',
     align: 'center',
     width: 120,
-    render: (url: string) => <Image src={url} width={60} height={60} style={{ borderRadius: 8 }} />,
+    render: (url: string) => <Image src={url} width={50} height={50} style={{ borderRadius: 8 }} />,
   },
   {
     key: 'name',
@@ -28,12 +28,15 @@ const columns: TableProps['columns'] = [
     key: 'categories',
     dataIndex: 'categories',
     title: 'Categories',
-    render: (categories: Product['categories']) =>
-      categories.map((c) => (
-        <Tag key={c.id} color='blue'>
-          {c.name}
-        </Tag>
-      )),
+    render: (categories: Product['categories']) => (
+      <Space size='small' wrap>
+        {categories.map((c) => (
+          <Tag key={c.id} color='blue' style={{ margin: 0, border: 'none' }}>
+            {c.name}
+          </Tag>
+        ))}
+      </Space>
+    ),
   },
   {
     key: 'stockQuantity',
@@ -49,7 +52,7 @@ const columns: TableProps['columns'] = [
     align: 'center',
     render: (id: number) => (
       <Link to={`/products/${id}`} target='_blank'>
-        <IconPencilMinus size={20} />
+        <IconPencilMinus size={18} />
       </Link>
     ),
   },
@@ -86,13 +89,13 @@ const Inventory = () => {
         </Typography.Title>
         <Toolbar>
           <Search onSearch={setKeyword} />
-          <NewButton />
+          <NewButton href='/inventory/new' />
         </Toolbar>
       </Flex>
       <Card bordered={false} style={{ padding: 10 }}>
         <Table
           loading={loading}
-          dataSource={products}
+          dataSource={products.map((p) => ({ ...p, key: p.id }))}
           columns={columns}
           pagination={{ pageSize: 20, total: totalElements }}
         />

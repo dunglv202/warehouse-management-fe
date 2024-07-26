@@ -3,6 +3,7 @@ import DefaultLayout from '@/layouts/DefaultLayout/DefaultLayout'
 import Category from '@/views/Category/Index'
 import Dashboard from '@/views/Dashboard/Index'
 import Inventory from '@/views/Inventory/Index'
+import NewProduct from '@/views/Inventory/NewProduct'
 import Login from '@/views/Login/Index'
 import Logout from '@/views/Logout/Index'
 import { createBrowserRouter } from 'react-router-dom'
@@ -35,7 +36,16 @@ export const router = createBrowserRouter([
           },
           {
             path: 'inventory',
-            element: <Inventory />,
+            children: [
+              {
+                path: '',
+                element: <Inventory />,
+              },
+              {
+                path: 'new',
+                element: <NewProduct />,
+              },
+            ],
           },
           {
             path: 'category',

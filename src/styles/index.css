@@ -10,4 +10,5 @@ ul {
 
 * {
   transition: color 0s !important;
+  font-weight: bold !important;
 }
