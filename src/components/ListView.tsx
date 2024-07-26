@@ -6,9 +6,10 @@ interface Props {
   listName: string
   dataSource: TableProps['dataSource']
   columns: TableProps['columns']
+  pagination?: TableProps['pagination']
 }
 
-const ListView = ({ listName, dataSource, columns }: Props) => {
+const ListView = ({ listName, dataSource, columns, pagination }: Props) => {
   return (
     <>
       <Flex wrap align='center' justify='space-between' style={{ marginBottom: 20 }}>
@@ -20,7 +21,7 @@ const ListView = ({ listName, dataSource, columns }: Props) => {
         </Toolbar>
       </Flex>
       <Card bordered={false} style={{ padding: 10 }}>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={dataSource} columns={columns} pagination={pagination} />
       </Card>
     </>
   )

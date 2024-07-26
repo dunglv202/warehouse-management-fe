@@ -10,3 +10,8 @@ export interface NewCategory {
   thumbnail?: File
   description?: string
 }
+
+export interface ShortCategory {
+  id: number
+  name: string
+}

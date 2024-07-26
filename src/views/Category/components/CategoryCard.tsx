@@ -17,7 +17,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
             width: 80,
             height: 80,
             overflow: 'hidden',
-            borderRadius: 6,
+            borderRadius: 8,
           }}
         >
           {category.thumbnail ? <Image src={category.thumbnail} preview={false} /> : <IconTag />}
