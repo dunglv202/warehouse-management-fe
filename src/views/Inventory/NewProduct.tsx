@@ -1,12 +1,11 @@
 import ImageUploader from '@/components/ImageUploader/ImageUploader'
-import Loading from '@/components/Loading'
+import SearchSelect, { OptionsFetchingFn } from '@/components/SearchSelect/SearchSelect'
 import useGuard from '@/hooks/useGuard'
-import { Category } from '@/models/category'
 import { type NewProduct } from '@/models/product'
 import { getCategories } from '@/services/category-service'
 import { createProduct } from '@/services/product-service'
-import { Button, Card, Empty, Form, Input, InputNumber, Select } from 'antd'
-import { useEffect, useState } from 'react'
+import { Button, Card, Form, Input, InputNumber } from 'antd'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const NewProduct = () => {
@@ -14,32 +13,7 @@ const NewProduct = () => {
 
   const navigate = useNavigate()
   const [form] = Form.useForm<NewProduct>()
-  const [categories, setCategories] = useState<Category[]>([])
   const [submitting, setSubmitting] = useState(false)
-  const [cateKeyword, setCateKeyword] = useState('')
-  const [fetchingCates, setFetchingCates] = useState(false)
-
-  const fetchCategories = async (keyword?: string) => {
-    setFetchingCates(true)
-    setCategories([])
-    try {
-      const result = await getCategories(keyword)
-      setCategories(result.content)
-    } finally {
-      setFetchingCates(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchCategories()
-  }, [])
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchCategories(cateKeyword?.trim())
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [cateKeyword])
 
   const submit = async () => {
     setSubmitting(true)
@@ -50,6 +24,11 @@ const NewProduct = () => {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  const cateFetcher: OptionsFetchingFn = async (keyword: string) => {
+    const categories = (await getCategories(keyword)).content
+    return categories.map((cate) => ({ label: cate.name, value: cate.id }))
   }
 
   return (
@@ -77,17 +56,9 @@ const NewProduct = () => {
           <InputNumber min={0} controls={false} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item label='Categories' name='categoryIds'>
-          <Select
-            mode='multiple'
+          <SearchSelect
             onChange={(selected) => form.setFieldsValue({ categoryIds: selected })}
-            onSearch={setCateKeyword}
-            filterOption={false}
-            options={categories.map((cate) => ({
-              value: cate.id,
-              label: cate.name,
-            }))}
-            notFoundContent={fetchingCates ? <Loading /> : <Empty imageStyle={{ height: 50 }} />}
-            style={{ width: '100%' }}
+            fetcher={cateFetcher}
           />
         </Form.Item>
         <Button type='primary' htmlType='submit' loading={submitting}>
