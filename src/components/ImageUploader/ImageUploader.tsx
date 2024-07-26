@@ -43,8 +43,9 @@ const ImageUploader = ({ onUpload }: ImageUploaderProps) => {
           listType='picture-card'
           onChange={onChange}
           onPreview={onPreview}
+          maxCount={1}
         >
-          {!fileList.length && <IconUpload size={18} />}
+          <IconUpload size={18} />
         </Upload>
       </ImgCrop>
       {previewImage && (

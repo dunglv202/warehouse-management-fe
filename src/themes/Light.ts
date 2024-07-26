@@ -11,6 +11,7 @@ const lightTheme: ThemeConfig = {
     colorBorder: '#dce2ec',
     colorBorderSecondary: '#e9eff7',
     boxShadowTertiary: '2px 2px 12px -2px #e9eff730',
+    boxShadowSecondary: '2px 2px 12px -2px #9da2a720',
     colorText: '#4f5d75',
   },
   components: {

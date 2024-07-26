@@ -16,5 +16,5 @@ export interface NewProduct {
   name: string
   thumbnail: File
   stockQuantity: number
-  categories?: number[]
+  categoryIds?: number[]
 }

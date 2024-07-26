@@ -1,9 +1,11 @@
 import ImageUploader from '@/components/ImageUploader/ImageUploader'
+import Loading from '@/components/Loading'
 import useGuard from '@/hooks/useGuard'
 import { Category } from '@/models/category'
+import { type NewProduct } from '@/models/product'
 import { getCategories } from '@/services/category-service'
 import { createProduct } from '@/services/product-service'
-import { Button, Card, Form, Input, InputNumber, Select } from 'antd'
+import { Button, Card, Empty, Form, Input, InputNumber, Select } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,22 +13,33 @@ const NewProduct = () => {
   useGuard()
 
   const navigate = useNavigate()
-  const [form] = Form.useForm<{
-    name: string
-    thumbnail: File
-    stockQuantity: number
-    categories?: number[]
-  }>()
+  const [form] = Form.useForm<NewProduct>()
   const [categories, setCategories] = useState<Category[]>([])
   const [submitting, setSubmitting] = useState(false)
+  const [cateKeyword, setCateKeyword] = useState('')
+  const [fetchingCates, setFetchingCates] = useState(false)
+
+  const fetchCategories = async (keyword?: string) => {
+    setFetchingCates(true)
+    setCategories([])
+    try {
+      const result = await getCategories(keyword)
+      setCategories(result.content)
+    } finally {
+      setFetchingCates(false)
+    }
+  }
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      const result = await getCategories()
-      setCategories(result.content)
-    }
     fetchCategories()
   }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchCategories(cateKeyword?.trim())
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [cateKeyword])
 
   const submit = async () => {
     setSubmitting(true)
@@ -42,7 +55,11 @@ const NewProduct = () => {
   return (
     <Card bordered={false}>
       <Form form={form} autoComplete='off' layout='vertical' onSubmitCapture={submit}>
-        <Form.Item label='Thumbnail' name='thumbnail'>
+        <Form.Item
+          label='Thumbnail'
+          name='thumbnail'
+          rules={[{ required: true, message: 'Thumbnail is required' }]}
+        >
           <ImageUploader onUpload={(file) => form.setFieldsValue({ thumbnail: file })} />
         </Form.Item>
         <Form.Item
@@ -59,16 +76,18 @@ const NewProduct = () => {
         >
           <InputNumber min={0} controls={false} style={{ width: '100%' }} />
         </Form.Item>
-        <Form.Item label='Categories' name='categories'>
+        <Form.Item label='Categories' name='categoryIds'>
           <Select
             mode='multiple'
-            value={form.getFieldsValue().categories}
-            onChange={(selected) => form.setFieldsValue({ categories: selected })}
-            style={{ width: '100%' }}
+            onChange={(selected) => form.setFieldsValue({ categoryIds: selected })}
+            onSearch={setCateKeyword}
+            filterOption={false}
             options={categories.map((cate) => ({
               value: cate.id,
               label: cate.name,
             }))}
+            notFoundContent={fetchingCates ? <Loading /> : <Empty imageStyle={{ height: 50 }} />}
+            style={{ width: '100%' }}
           />
         </Form.Item>
         <Button type='primary' htmlType='submit' loading={submitting}>

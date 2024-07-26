@@ -14,8 +14,8 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
           justify='center'
           align='center'
           style={{
-            width: 70,
-            height: 70,
+            width: 66,
+            height: 66,
             overflow: 'hidden',
             borderRadius: 8,
           }}

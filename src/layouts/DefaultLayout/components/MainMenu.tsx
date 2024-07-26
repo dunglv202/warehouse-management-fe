@@ -1,8 +1,10 @@
 import logo from '@/assets/vite.svg'
 import {
+  IconBuildings,
   IconBuildingWarehouse,
   IconClipboardData,
   IconGraph,
+  IconHeadphones,
   IconPackageImport,
   IconSettings,
   IconTag,
@@ -12,6 +14,7 @@ import { Flex, Image, Menu, MenuProps } from 'antd'
 import Sider from 'antd/es/layout/Sider'
 import { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+
 interface MenuItem {
   path: string
   label: string
@@ -33,6 +36,16 @@ const menuItems: MenuItem[] = [
     path: '/category',
     label: 'Category',
     icon: <IconTag size={21} />,
+  },
+  {
+    path: '/provider',
+    label: 'Provider',
+    icon: <IconBuildings size={21} />,
+  },
+  {
+    path: '/customer',
+    label: 'Customer',
+    icon: <IconHeadphones size={21} />,
   },
   {
     path: '/import',
