@@ -6,6 +6,8 @@ import Inventory from '@/views/Inventory/Index'
 import NewProduct from '@/views/Inventory/NewProduct'
 import Login from '@/views/Login/Index'
 import Logout from '@/views/Logout/Index'
+import Provider from '@/views/Provider/Index'
+import NewProvider from '@/views/Provider/NewProvider'
 import { createBrowserRouter } from 'react-router-dom'
 
 export const router = createBrowserRouter([
@@ -50,6 +52,19 @@ export const router = createBrowserRouter([
           {
             path: 'category',
             element: <Category />,
+          },
+          {
+            path: 'provider',
+            children: [
+              {
+                path: '',
+                element: <Provider />,
+              },
+              {
+                path: 'new',
+                element: <NewProvider />,
+              },
+            ],
           },
         ],
       },
