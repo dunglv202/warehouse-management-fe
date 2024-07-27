@@ -1,5 +1,7 @@
+import AddressSelect from '@/components/AddressSelect/AddressSelect'
 import ImageUploader from '@/components/ImageUploader/ImageUploader'
 import useGuard from '@/hooks/useGuard'
+import { Address } from '@/models/common'
 import { type NewProvider } from '@/models/provider'
 import { addProvider } from '@/services/provider-service'
 import { Button, Card, Form, Input } from 'antd'
@@ -24,6 +26,8 @@ const NewProvider = () => {
     }
   }
 
+  const handleAddressChange = (address: Address) => form.setFieldsValue({ address })
+
   return (
     <Card bordered={false}>
       <Form form={form} autoComplete='off' layout='vertical' onSubmitCapture={submit}>
@@ -46,6 +50,9 @@ const NewProvider = () => {
         </Form.Item>
         <Form.Item label='Phone' name='phone'>
           <Input />
+        </Form.Item>
+        <Form.Item name='address'>
+          <AddressSelect onChange={handleAddressChange} />
         </Form.Item>
         <Button type='primary' htmlType='submit' loading={submitting}>
           Confirm

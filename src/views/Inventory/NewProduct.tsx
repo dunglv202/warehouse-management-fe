@@ -57,6 +57,7 @@ const NewProduct = () => {
         </Form.Item>
         <Form.Item label='Categories' name='categoryIds'>
           <SearchSelect
+            mode='multiple'
             onChange={(selected) => form.setFieldsValue({ categoryIds: selected })}
             fetcher={cateFetcher}
           />

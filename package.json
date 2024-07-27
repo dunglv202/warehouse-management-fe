@@ -12,9 +12,11 @@
   "dependencies": {
     "@tabler/icons-react": "^3.11.0",
     "@types/node": "^20.14.11",
+    "@types/qs": "^6.9.15",
     "antd": "^5.19.3",
     "antd-img-crop": "^4.22.0",
     "axios": "^1.7.2",
+    "qs": "^6.12.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.25.1"

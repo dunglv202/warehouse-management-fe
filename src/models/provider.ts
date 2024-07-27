@@ -1,3 +1,5 @@
+import { Address } from './common'
+
 export interface ProviderCriteria {
   keyword?: string
 }
@@ -7,7 +9,7 @@ export interface NewProvider {
   logo: File
   email?: string
   phone?: string
-  address?: string
+  address?: Address
 }
 
 export interface Provider {

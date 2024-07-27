@@ -32,7 +32,6 @@ const SearchSelect = ({ fetcher, ...otherProps }: SearchSelectProps) => {
 
   return (
     <Select
-      mode='multiple'
       onSearch={setKeyword}
       filterOption={false}
       options={options}
