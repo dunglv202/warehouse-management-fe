@@ -79,7 +79,9 @@ const makeMenuItem = (item: MenuItem): Required<MenuProps>['items'][number] => {
 
 const MainMenu = () => {
   const location = useLocation()
-  const activeMenu = menuItems.map((item) => item.path).find((key) => location.pathname === key)
+  const activeMenu = menuItems
+    .map((item) => item.path)
+    .find((key) => location.pathname.startsWith(key))
 
   return (
     <Sider width={300} style={{ paddingLeft: 20, paddingBlock: 40 }}>
