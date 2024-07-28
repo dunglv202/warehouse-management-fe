@@ -1,6 +1,8 @@
 import AuthLayout from '@/layouts/AuthLayout/AuthLayout'
 import DefaultLayout from '@/layouts/DefaultLayout/DefaultLayout'
 import Category from '@/views/Category/Index'
+import Customer from '@/views/Customer/Index'
+import NewCustomer from '@/views/Customer/NewCustomer'
 import Dashboard from '@/views/Dashboard/Index'
 import Inventory from '@/views/Inventory/Index'
 import NewProduct from '@/views/Inventory/NewProduct'
@@ -63,6 +65,19 @@ export const router = createBrowserRouter([
               {
                 path: 'new',
                 element: <NewProvider />,
+              },
+            ],
+          },
+          {
+            path: 'customer',
+            children: [
+              {
+                path: '',
+                element: <Customer />,
+              },
+              {
+                path: 'new',
+                element: <NewCustomer />,
               },
             ],
           },
