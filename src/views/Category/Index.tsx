@@ -1,11 +1,10 @@
-import Loading from '@/components/Loading'
 import NewButton from '@/components/Toolbar/NewButton'
 import Search from '@/components/Toolbar/Search'
 import Toolbar from '@/components/Toolbar/Toolbar'
 import useGuard from '@/hooks/useGuard'
 import { type Category } from '@/models/category'
 import { getCategories } from '@/services/category-service'
-import { Flex } from 'antd'
+import { Flex, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import CategoryCard from './components/CategoryCard'
 import NewCategory from './NewCategory'
@@ -39,13 +38,13 @@ const Category = () => {
         <Search onSearch={setKeyword} />
         <NewButton onClick={() => setShowForm(true)} />
       </Toolbar>
-      <Loading loading={loading}>
+      <Spin spinning={loading}>
         <Flex wrap gap={30}>
           {categories.map((category) => (
             <CategoryCard key={category.id} category={category} />
           ))}
         </Flex>
-      </Loading>
+      </Spin>
       {showForm && (
         <NewCategory close={() => setShowForm(false)} onSaveDone={() => setRefresh({})} />
       )}
