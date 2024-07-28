@@ -4,6 +4,11 @@ export interface Page<T> {
   content: T[]
 }
 
+export interface Pagination {
+  page?: number
+  size?: number
+}
+
 export interface Address {
   provinceId: number
   districtId: number

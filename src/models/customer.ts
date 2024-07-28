@@ -1,5 +1,9 @@
 import { Address } from './common'
 
+export interface CustomerCriteria {
+  keyword?: string
+}
+
 export interface NewCustomer {
   firstName: string
   lastName?: string

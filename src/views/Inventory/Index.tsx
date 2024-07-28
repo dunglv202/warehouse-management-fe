@@ -2,6 +2,7 @@ import NewButton from '@/components/Toolbar/NewButton'
 import Search from '@/components/Toolbar/Search'
 import Toolbar from '@/components/Toolbar/Toolbar'
 import useGuard from '@/hooks/useGuard'
+import { Pagination } from '@/models/common'
 import { Product } from '@/models/product'
 import { getProducts } from '@/services/product-service'
 import { IconPencilMinus } from '@tabler/icons-react'
@@ -65,12 +66,13 @@ const Inventory = () => {
   const [totalElements, setTotalElements] = useState(0)
   const [keyword, setKeyword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [pagination, setPagination] = useState<Pagination>()
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true)
       try {
-        const result = await getProducts({ keyword })
+        const result = await getProducts({ keyword }, pagination)
         setProducts(result.content)
         setTotalElements(result.totalElements)
       } finally {
@@ -79,7 +81,7 @@ const Inventory = () => {
     }
 
     fetchProducts()
-  }, [keyword])
+  }, [keyword, pagination])
 
   return (
     <>
@@ -98,6 +100,7 @@ const Inventory = () => {
           dataSource={products.map((p) => ({ ...p, key: p.id }))}
           columns={columns}
           pagination={{ pageSize: 20, total: totalElements }}
+          onChange={({ current }) => setPagination({ page: current ? current - 1 : undefined })}
         />
       </Card>
     </>

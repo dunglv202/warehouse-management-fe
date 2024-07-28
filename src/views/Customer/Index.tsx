@@ -2,6 +2,7 @@ import NewButton from '@/components/Toolbar/NewButton'
 import Search from '@/components/Toolbar/Search'
 import Toolbar from '@/components/Toolbar/Toolbar'
 import useGuard from '@/hooks/useGuard'
+import { Pagination } from '@/models/common'
 import { type Customer } from '@/models/customer'
 import { getCustomers } from '@/services/customer-service'
 import { IconPencilMinus } from '@tabler/icons-react'
@@ -55,12 +56,13 @@ const Customer = () => {
   const [totalElements, setTotalElements] = useState(0)
   const [providers, setProviders] = useState<Customer[]>([])
   const [loading, setLoading] = useState(false)
+  const [pagination, setPagination] = useState<Pagination>()
 
   useEffect(() => {
     const fetchProviders = async () => {
       setLoading(true)
       try {
-        const result = await getCustomers()
+        const result = await getCustomers({ keyword }, pagination)
         setProviders(result.content)
         setTotalElements(result.totalElements)
       } finally {
@@ -68,7 +70,7 @@ const Customer = () => {
       }
     }
     fetchProviders()
-  }, [keyword])
+  }, [keyword, pagination])
 
   return (
     <>
@@ -87,6 +89,9 @@ const Customer = () => {
           dataSource={providers.map((p) => ({ ...p, key: p.id }))}
           columns={columns}
           pagination={{ pageSize: 20, total: totalElements }}
+          onChange={({ current }) => {
+            setPagination({ page: current ? current - 1 : undefined })
+          }}
         />
       </Card>
     </>
