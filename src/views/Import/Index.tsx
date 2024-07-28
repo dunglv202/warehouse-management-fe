@@ -2,7 +2,7 @@ import NewButton from '@/components/Toolbar/NewButton'
 import Search from '@/components/Toolbar/Search'
 import Toolbar from '@/components/Toolbar/Toolbar'
 import useGuard from '@/hooks/useGuard'
-import { type Customer } from '@/models/customer'
+import { Customer } from '@/models/customer'
 import { getCustomers } from '@/services/customer-service'
 import { IconPencilMinus } from '@tabler/icons-react'
 import { Card, Flex, Table, TableProps, Typography } from 'antd'
@@ -48,7 +48,7 @@ const columns: TableProps['columns'] = [
   },
 ]
 
-const Customer = () => {
+const Import = () => {
   useGuard()
 
   const [keyword, setKeyword] = useState('')
@@ -78,7 +78,7 @@ const Customer = () => {
         </Typography.Title>
         <Toolbar>
           <Search onSearch={setKeyword} />
-          <NewButton href='/customer/new' />
+          <NewButton href='/import/new' />
         </Toolbar>
       </Flex>
       <Card bordered={false} style={{ padding: 10 }}>
@@ -93,4 +93,4 @@ const Customer = () => {
   )
 }
 
-export default Customer
+export default Import
