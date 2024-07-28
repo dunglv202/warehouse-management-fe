@@ -43,7 +43,7 @@ const MainHeader = () => {
               border: 'none',
             }}
           >
-            G
+            {user?.displayName?.charAt(0).toUpperCase()}
           </Avatar>
         </Dropdown>
       </Flex>
