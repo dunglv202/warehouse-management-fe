@@ -1,26 +1,27 @@
+import InputPrice from '@/components/PriceInput/InputPrice'
 import SearchSelect, { OptionsFetchingFn } from '@/components/SearchSelect/SearchSelect'
 import useGuard from '@/hooks/useGuard'
 import { type NewImport } from '@/models/import'
 import { addImport } from '@/services/import-service'
-import { getProducts } from '@/services/product-service'
 import { getProviders } from '@/services/provider-service'
-import { IconPlus, IconTrash } from '@tabler/icons-react'
+import { IconPlus } from '@tabler/icons-react'
 import {
   Button,
   Card,
   Col,
   DatePicker,
   Divider,
+  Flex,
   Form,
   Input,
-  InputNumber,
   Row,
   Select,
   Space,
   Typography,
 } from 'antd'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ImportItem from './components/ImportItem'
 
 const NewImport = () => {
   useGuard()
@@ -29,6 +30,8 @@ const NewImport = () => {
   const [form] = Form.useForm<NewImport>()
   const [submitting, setSubmitting] = useState(false)
   const [isDraft, setIsDraft] = useState(true)
+  const [subtotal, setSubtotal] = useState(0)
+  const [grandTotal, setGrandTotal] = useState(0)
 
   const submit = async () => {
     setSubmitting(true)
@@ -41,14 +44,22 @@ const NewImport = () => {
     }
   }
 
+  console.log('rendering')
+
+  const calculateTotal = useCallback(() => {
+    const items = form.getFieldsValue().items || []
+    const subtotal = items
+      .filter((i) => i?.price && i?.quantity)
+      .reduce((acc, item) => {
+        return acc + item.price * item.quantity
+      }, 0)
+    setSubtotal(subtotal)
+    setGrandTotal(subtotal + form.getFieldValue('shippingCost') + form.getFieldValue('tax'))
+  }, [form])
+
   const providerFetcher: OptionsFetchingFn = async (keyword: string) => {
     const providers = (await getProviders({ keyword })).content
     return providers.map((p) => ({ label: p.name, value: p.id }))
-  }
-
-  const productFetcher: OptionsFetchingFn = async (keyword: string) => {
-    const products = (await getProducts({ keyword })).content
-    return products.map((p) => ({ label: p.name, value: p.id }))
   }
 
   return (
@@ -100,7 +111,7 @@ const NewImport = () => {
             <Form.Item
               label='Date'
               name='date'
-              rules={[{ required: !isDraft, message: 'Date is required' }]}
+              rules={[{ required: true, message: 'Date is required' }]}
             >
               <DatePicker placeholder='' style={{ width: '100%' }} />
             </Form.Item>
@@ -135,52 +146,12 @@ const NewImport = () => {
           {(fields, { add, remove }) => (
             <>
               {fields.map((field) => (
-                <Row gutter={16} key={field.key}>
-                  <Col span={5}>
-                    <Form.Item
-                      name={[field.name, 'productId']}
-                      rules={[{ required: true, message: 'Product is required' }]}
-                    >
-                      <SearchSelect fetcher={productFetcher} showSearch />
-                    </Form.Item>
-                  </Col>
-                  <Col span={6}>
-                    <Form.Item name={[field.name, 'notes']}>
-                      <Input maxLength={100} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={4}>
-                    <Form.Item
-                      name={[field.name, 'quantity']}
-                      rules={[{ required: true, message: 'Quanity is required' }]}
-                    >
-                      <InputNumber min={1} step='any' style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={4}>
-                    <Form.Item
-                      name={[field.name, 'price']}
-                      rules={[{ required: true, message: 'Price is required' }]}
-                    >
-                      <InputNumber min={0} step='any' style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={4}>
-                    <Form.Item>
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  <Col span={1}>
-                    <Form.Item>
-                      <IconTrash
-                        onClick={() => remove(field.name)}
-                        size={18}
-                        className='hoverable'
-                        style={{ cursor: 'pointer' }}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
+                <ImportItem
+                  key={field.key}
+                  field={field}
+                  remove={remove}
+                  onTotalSet={calculateTotal}
+                />
               ))}
               <Form.Item>
                 <Button onClick={() => add()} type='dashed' block icon={<IconPlus size={18} />}>
@@ -190,12 +161,28 @@ const NewImport = () => {
             </>
           )}
         </Form.List>
-        <Space>
-          <Button onClick={() => navigate('/import')}>Cancel</Button>
-          <Button type='primary' htmlType='submit' loading={submitting}>
-            Confirm
-          </Button>
-        </Space>
+        <Flex justify='space-between' align='flex-start'>
+          <Space>
+            <Button onClick={() => navigate('/import')}>Cancel</Button>
+            <Button type='primary' htmlType='submit' loading={submitting}>
+              {isDraft ? 'Save draft' : 'Confirm'}
+            </Button>
+          </Space>
+          <Flex vertical align='flex-end'>
+            <Form.Item label='Subtotal' layout='horizontal'>
+              <InputPrice readOnly value={subtotal} />
+            </Form.Item>
+            <Form.Item label='Shipping' name='shippingCost' initialValue={0} layout='horizontal'>
+              <InputPrice step='any' min={0} onChange={calculateTotal} controls={false} />
+            </Form.Item>
+            <Form.Item label='Tax' name='tax' initialValue={0} layout='horizontal'>
+              <InputPrice step='any' min={0} onChange={calculateTotal} controls={false} />
+            </Form.Item>
+            <Form.Item label='Grand total' layout='horizontal'>
+              <InputPrice readOnly value={grandTotal} />
+            </Form.Item>
+          </Flex>
+        </Flex>
       </Form>
     </Card>
   )
