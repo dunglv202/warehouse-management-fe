@@ -26,8 +26,11 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
     const fetchUser = async () => {
       if (authenticated && Boolean(authenticated)) {
-        setUser(await getMyInfo())
-        setLoading(false)
+        try {
+          setUser(await getMyInfo())
+        } finally {
+          setLoading(false)
+        }
       }
     }
 

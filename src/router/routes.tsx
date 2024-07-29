@@ -12,12 +12,16 @@ import Login from '@/views/Login/Index'
 import Logout from '@/views/Logout/Index'
 import Provider from '@/views/Provider/Index'
 import NewProvider from '@/views/Provider/NewProvider'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     children: [
+      {
+        path: '/',
+        element: <Navigate to={'/dashboard'} />,
+      },
       {
         path: '/logout',
         element: <Logout />,

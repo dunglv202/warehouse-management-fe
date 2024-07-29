@@ -9,6 +9,11 @@ export interface Pagination {
   size?: number
 }
 
+export interface ApiError {
+  code?: string
+  message?: string
+}
+
 export interface Address {
   provinceId: number
   districtId: number
